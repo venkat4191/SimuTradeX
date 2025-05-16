@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #e0e0e0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #357abd, #2a5f9e);
+        }
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .user-message {
+            background: rgba(74, 144, 226, 0.2);
+            margin-left: 2rem;
+        }
+        .bot-message {
+            background: rgba(45, 55, 72, 0.5);
+            margin-right: 2rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4">
+    <div class="container mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-4xl font-bold text-center">AI Assistant</h1>
+            <a href="/" class="btn">
+                <i class="fas fa-home mr-2"></i>Back to Home
+            </a>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="card p-6 max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4">
+                <i class="fas fa-robot mr-2 text-blue-400"></i>Chat with AI Assistant
+            </h2>
+            <div class="chat-container mb-4 p-4 bg-gray-800 rounded-lg">
+                {% for message in messages %}
+                <div class="message {% if message.role == 'user' %}user-message{% else %}bot-message{% endif %}">
+                    <p class="text-sm text-gray-400 mb-1">{{ message.role|title }}</p>
+                    <p>{{ message.content }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <form action="/chatbot" method="post" class="flex gap-4">
+                <input type="text" name="message" required
+                       class="flex-1 bg-gray-800 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                       placeholder="Ask me anything about stocks...">
+                <button type="submit" class="btn">
+                    <i class="fas fa-paper-plane mr-2"></i>Send
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

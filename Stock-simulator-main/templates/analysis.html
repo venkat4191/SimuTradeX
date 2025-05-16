@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #e0e0e0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #357abd, #2a5f9e);
+        }
+        .trend-up {
+            color: #4ade80;
+        }
+        .trend-down {
+            color: #f87171;
+        }
+        .trend-neutral {
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4">
+    <div class="container mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-4xl font-bold text-center">Stock Analysis</h1>
+            <a href="/" class="btn">
+                <i class="fas fa-home mr-2"></i>Back to Home
+            </a>
+        </div>
+
+        <!-- Analysis Results -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Price Chart -->
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-4">
+                    <i class="fas fa-chart-line mr-2 text-blue-400"></i>Price Chart
+                </h2>
+                <div class="aspect-w-16 aspect-h-9">
+                    <img src="{{ url_for('static', filename='price_chart.png') }}" 
+                         alt="Price Chart" class="w-full h-full object-contain">
+                </div>
+            </div>
+
+            <!-- Technical Indicators -->
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-4">
+                    <i class="fas fa-chart-bar mr-2 text-blue-400"></i>Technical Indicators
+                </h2>
+                <div class="aspect-w-16 aspect-h-9">
+                    <img src="{{ url_for('static', filename='indicators.png') }}" 
+                         alt="Technical Indicators" class="w-full h-full object-contain">
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Details -->
+        <div class="card p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">
+                <i class="fas fa-info-circle mr-2 text-blue-400"></i>Analysis Details
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-4 bg-gray-800 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">Current Price</h3>
+                    <p class="text-2xl font-bold">₹{{ analysis.current_price }}</p>
+                </div>
+                <div class="p-4 bg-gray-800 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">52-Week High</h3>
+                    <p class="text-2xl font-bold">₹{{ analysis.high_52w }}</p>
+                </div>
+                <div class="p-4 bg-gray-800 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">52-Week Low</h3>
+                    <p class="text-2xl font-bold">₹{{ analysis.low_52w }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Analysis -->
+        <div class="card p-6">
+            <h2 class="text-2xl font-bold mb-4">
+                <i class="fas fa-chart-bar mr-2 text-blue-400"></i>Technical Analysis
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="p-4 bg-gray-800 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">RSI</h3>
+                    <p class="text-2xl font-bold {% if analysis.rsi > 70 %}trend-down{% elif analysis.rsi < 30 %}trend-up{% else %}trend-neutral{% endif %}">
+                        {{ analysis.rsi }}
+                    </p>
+                    <p class="text-gray-400 mt-2">Relative Strength Index</p>
+                </div>
+                <div class="p-4 bg-gray-800 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">MACD</h3>
+                    <p class="text-2xl font-bold {% if analysis.macd > 0 %}trend-up{% else %}trend-down{% endif %}">
+                        {{ analysis.macd }}
+                    </p>
+                    <p class="text-gray-400 mt-2">Moving Average Convergence Divergence</p>
+                </div>
+                <div class="p-4 bg-gray-800 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">SMA (20)</h3>
+                    <p class="text-2xl font-bold">₹{{ analysis.sma_20 }}</p>
+                    <p class="text-gray-400 mt-2">20-Day Simple Moving Average</p>
+                </div>
+                <div class="p-4 bg-gray-800 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">SMA (50)</h3>
+                    <p class="text-2xl font-bold">₹{{ analysis.sma_50 }}</p>
+                    <p class="text-gray-400 mt-2">50-Day Simple Moving Average</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

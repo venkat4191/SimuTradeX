@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Stock Market Simulator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #e0e0e0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .ticker-container {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 10px;
+            overflow: hidden;
+        }
+        .ticker {
+            animation: ticker 20s linear infinite;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #357abd, #2a5f9e);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4">
+    <div class="container mx-auto">
+        <h1 class="text-4xl font-bold text-center mb-8">AI Stock Market Simulator</h1>
+        <p class="text-center mb-8">Real-time stock data and portfolio management</p>
+
+        <div class="ticker-container mb-8">
+            <div class="ticker whitespace-nowrap">
+                {% for ticker, price in stock_prices.items() %}
+                <span class="inline-block mx-4">{{ ticker }}: ₹{{ price }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <a href="/ai-predict" class="card p-6 text-center">
+                <i class="fas fa-robot text-4xl mb-4 text-blue-400"></i>
+                <h2 class="text-xl font-bold">AI Stock Prediction</h2>
+                <p class="text-gray-400 mt-2">Get AI-powered predictions</p>
+            </a>
+            <a href="/portfolio" class="card p-6 text-center">
+                <i class="fas fa-chart-pie text-4xl mb-4 text-green-400"></i>
+                <h2 class="text-xl font-bold">View Portfolio</h2>
+                <p class="text-gray-400 mt-2">Check your investments</p>
+            </a>
+            <a href="/buy" class="card p-6 text-center">
+                <i class="fas fa-shopping-cart text-4xl mb-4 text-purple-400"></i>
+                <h2 class="text-xl font-bold">Buy Stock</h2>
+                <p class="text-gray-400 mt-2">Purchase new stocks</p>
+            </a>
+            <a href="/sell" class="card p-6 text-center">
+                <i class="fas fa-sell text-4xl mb-4 text-red-400"></i>
+                <h2 class="text-xl font-bold">Sell Stock</h2>
+                <p class="text-gray-400 mt-2">Sell your stocks</p>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="/latest_news" class="card p-6 text-center">
+                <i class="fas fa-newspaper text-4xl mb-4 text-yellow-400"></i>
+                <h2 class="text-xl font-bold">Latest Market News</h2>
+                <p class="text-gray-400 mt-2">Stay updated with market news</p>
+            </a>
+            <a href="/chatbot" class="card p-6 text-center">
+                <i class="fas fa-robot text-4xl mb-4 text-blue-400"></i>
+                <h2 class="text-xl font-bold">AI Assistant</h2>
+                <p class="text-gray-400 mt-2">Get help from our AI</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

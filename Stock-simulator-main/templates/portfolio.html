@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #e0e0e0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        .trend-up {
+            color: #4ade80;
+        }
+        .trend-down {
+            color: #f87171;
+        }
+        .trend-neutral {
+            color: #9ca3af;
+        }
+        .btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #357abd, #2a5f9e);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4">
+    <div class="container mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-4xl font-bold text-center">Portfolio Analysis</h1>
+            <a href="/" class="btn">
+                <i class="fas fa-home mr-2"></i>Back to Home
+            </a>
+        </div>
+
+        <!-- Portfolio Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="metric-card p-6">
+                <i class="fas fa-wallet text-4xl mb-4 text-blue-400"></i>
+                <h3 class="text-lg font-semibold mb-3">Total Portfolio Value</h3>
+                <p class="text-3xl font-bold">₹{{ portfolio_info.total_value }}</p>
+                <p class="text-gray-400 mt-2">Current Market Value</p>
+            </div>
+            <div class="metric-card p-6">
+                <i class="fas fa-coins text-4xl mb-4 text-green-400"></i>
+                <h3 class="text-lg font-semibold mb-3">Total Investment</h3>
+                <p class="text-3xl font-bold">₹{{ portfolio_info.total_investment }}</p>
+                <p class="text-gray-400 mt-2">Initial Investment</p>
+            </div>
+            <div class="metric-card p-6">
+                <i class="fas fa-chart-line text-4xl mb-4 text-purple-400"></i>
+                <h3 class="text-lg font-semibold mb-3">Portfolio Return</h3>
+                <p class="text-3xl font-bold {% if portfolio_info.return_percentage > 0 %}trend-up{% elif portfolio_info.return_percentage < 0 %}trend-down{% else %}trend-neutral{% endif %}">
+                    {{ portfolio_info.return_percentage }}%
+                </p>
+                <p class="text-gray-400 mt-2">Overall Return</p>
+            </div>
+        </div>
+
+        <!-- Portfolio Allocation -->
+        <div class="card p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">
+                <i class="fas fa-chart-pie mr-2 text-blue-400"></i>Portfolio Allocation
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="aspect-w-16 aspect-h-9">
+                    <img src="{{ url_for('static', filename='portfolio_pie_chart.png') }}" 
+                         alt="Portfolio Allocation" class="w-full h-full object-contain">
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold">Holdings Breakdown</h3>
+                    <div class="space-y-2">
+                        {% for stock in portfolio_info.holdings %}
+                        <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+                            <span class="font-medium">{{ stock.symbol }}</span>
+                            <span class="text-blue-400">{{ stock.percentage }}%</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Holdings -->
+        <div class="card p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4">
+                <i class="fas fa-list text-blue-400 mr-2"></i>Detailed Holdings
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left border-b border-gray-700">
+                            <th class="pb-3">Symbol</th>
+                            <th class="pb-3">Quantity</th>
+                            <th class="pb-3">Avg. Price</th>
+                            <th class="pb-3">Current Price</th>
+                            <th class="pb-3">Value</th>
+                            <th class="pb-3">Return</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stock in portfolio_info.holdings %}
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3">{{ stock.symbol }}</td>
+                            <td class="py-3">{{ stock.quantity }}</td>
+                            <td class="py-3">₹{{ stock.avg_price }}</td>
+                            <td class="py-3">₹{{ stock.current_price }}</td>
+                            <td class="py-3">₹{{ stock.value }}</td>
+                            <td class="py-3 {% if stock.return_percentage > 0 %}trend-up{% elif stock.return_percentage < 0 %}trend-down{% else %}trend-neutral{% endif %}">
+                                {{ stock.return_percentage }}%
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="card p-6">
+            <h2 class="text-2xl font-bold mb-4">
+                <i class="fas fa-chart-bar text-blue-400 mr-2"></i>Performance Metrics
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="metric-card p-6">
+                    <i class="fas fa-arrow-up text-4xl mb-4 text-green-400"></i>
+                    <h3 class="text-lg font-semibold mb-3">Best Performer</h3>
+                    <p class="text-xl font-bold trend-up">{{ portfolio_info.best_performer.symbol }}</p>
+                    <p class="text-gray-400 mt-2">{{ portfolio_info.best_performer.return_percentage }}% return</p>
+                </div>
+                <div class="metric-card p-6">
+                    <i class="fas fa-arrow-down text-4xl mb-4 text-red-400"></i>
+                    <h3 class="text-lg font-semibold mb-3">Worst Performer</h3>
+                    <p class="text-xl font-bold trend-down">{{ portfolio_info.worst_performer.symbol }}</p>
+                    <p class="text-gray-400 mt-2">{{ portfolio_info.worst_performer.return_percentage }}% return</p>
+                </div>
+                <div class="metric-card p-6">
+                    <i class="fas fa-balance-scale text-4xl mb-4 text-blue-400"></i>
+                    <h3 class="text-lg font-semibold mb-3">Portfolio Beta</h3>
+                    <p class="text-xl font-bold">{{ portfolio_info.beta }}</p>
+                    <p class="text-gray-400 mt-2">Market Sensitivity</p>
+                </div>
+                <div class="metric-card p-6">
+                    <i class="fas fa-chart-line text-4xl mb-4 text-purple-400"></i>
+                    <h3 class="text-lg font-semibold mb-3">Sharpe Ratio</h3>
+                    <p class="text-xl font-bold">{{ portfolio_info.sharpe_ratio }}</p>
+                    <p class="text-gray-400 mt-2">Risk-Adjusted Return</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
