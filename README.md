@@ -13,7 +13,23 @@ An intelligent stock market simulator that combines real-time market data, predi
 - **Portfolio Optimization**: Get AI-driven portfolio recommendations
 
 ## 🚀 Getting Started
+DASHBOARD
 
+![SimuTradeX Dashboard](/STOCK_DASHBOARD.png)
+
+AI PREDICTION
+
+![SimuTradeX Dashboard](/AI_STOCK_ANALYSIS.png)
+![SimuTradeX Dashboard](/PREDICTED_GRAPH.png)
+![SimuTradeX Dashboard](/TECHNICAL.png)
+
+PORTFOLIO
+
+![SimuTradeX Dashboard](/PORTFOLIO.png)
+![SimuTradeX Dashboard](/PORTFOLIO_2.png)
+
+BUY
+![SimuTradeX Dashboard](/BUY_STOCK.png)
 ### Prerequisites
 
 - Python 3.8 or higher
