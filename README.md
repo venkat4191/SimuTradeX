@@ -91,16 +91,6 @@ http://localhost:5000
 - **Market Data**: Yahoo Finance API
 - **Visualization**: Plotly
 
-## 📊 Project Structure
 
-```
-StockSage-AI/
-├── app.py              # Main application file
-├── ml_models.py        # Machine learning models
-├── static/            # Static files (CSS, JS)
-├── templates/         # HTML templates
-├── requirements.txt   # Project dependencies
-└── README.md         # Project documentation
-```
 
 
